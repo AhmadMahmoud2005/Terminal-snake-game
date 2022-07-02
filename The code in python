@@ -1,0 +1,65 @@
+import os
+import keyboard
+import random
+import time
+
+width, height = 10, 5
+
+snake = "# "
+snake_place_x = width // 2
+snake_place_y = height // 2
+
+food = "o "
+food_place_x = random.randint(0, width - 1)
+food_place_y = random.randint(0, height - 1)
+score = 0
+i = 0
+
+print("Use the arrow keys to move, and use \"q\" button to quit")
+print("press any arrow button to start playing")
+counter = 0
+start = time.time()
+while True:
+
+    while food_place_x == snake_place_x and food_place_y == snake_place_y:
+        food_place_x = random.randint(0, width - 1)
+        food_place_y = random.randint(0, height - 1)
+        snake += "# "
+        score += 1
+
+    screen = ""
+    for y in range(height):
+        for x in range(width):
+            if x == snake_place_x and y == snake_place_y:
+                screen += snake
+            elif x == food_place_x and y == food_place_y:
+                screen += food
+            else:
+                screen += "- "
+        screen += "\n"
+
+    if not 0 <= snake_place_x <= width - 1 or not 0 <= snake_place_y <= height - 1:
+        print("You lose")
+        break
+
+    if keyboard.read_key() == "q":
+        break
+    elif keyboard.is_pressed("up arrow"):
+        snake_place_y -= 1
+    elif keyboard.is_pressed("down arrow"):
+        snake_place_y += 1
+    elif keyboard.is_pressed("right arrow"):
+        snake_place_x += 1
+    elif keyboard.is_pressed("left arrow"):
+        snake_place_x -= 1
+
+    print(screen)
+    os.system("cls")
+    counter += 1
+
+end = time.time()
+print("Finished")
+print(f"Your score: {score}")
+fps = round((width * height * counter) / (end - start))
+print(f"fps: {fps}")
+
